@@ -10,6 +10,7 @@ import sys
 print("loading..")
 
 # Example: https://github.com/mbientlab/MetaWear-SDK-Python/blob/master/examples/stream_acc_gyro.py
+# Run with python3 metawear.py C4:89:ED:7D:03:ED
 
 class State:
     def __init__(self, device):
