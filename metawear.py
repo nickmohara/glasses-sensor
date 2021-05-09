@@ -14,12 +14,28 @@ print("loading..")
 
 class State:
     def __init__(self, device):
+        self.isLookingDown = False
         self.device = device
         self.samples = 0
         self.callback = FnVoid_VoidP_DataP(self.data_handler)
 
     def data_handler(self, ctx, data):
-        print("%s -> %s" % (self.device.address, parse_value(data)))
+        parsedData = parse_value(data)
+        leftToRight = parsedData.x
+        upAndDown = parsedData.z # -100 is looked down; 100 is looked back up (assuming starting looking straight)
+        # print(upAndDown)
+        
+        if (self.isLookingDown is False):
+            if (upAndDown <= -80):
+                self.isLookingDown = True
+                print('isLookingDown: ', self.isLookingDown)
+        
+        if (self.isLookingDown is True):
+            if (upAndDown >= 80):
+                self.isLookingDown = False
+                print('isLookingDown: ', self.isLookingDown)
+        
+        # print("%s -> %s" % (self.device.address, parse_value(data)))
         self.samples+= 1
 
 
@@ -43,19 +59,19 @@ for s in states:
     #libmetawear.mbl_mw_gyro_bmi160_set_odr(s.device.board, 25.0);
     #libmetawear.mbl_mw_gyro_bmi160_write_config(s.device.board);
 
-    acc = libmetawear.mbl_mw_acc_get_acceleration_data_signal(s.device.board)
-    libmetawear.mbl_mw_datasignal_subscribe(acc, None, s.callback)
+    #acc = libmetawear.mbl_mw_acc_get_acceleration_data_signal(s.device.board)
+    #libmetawear.mbl_mw_datasignal_subscribe(acc, None, s.callback)
 
     gyro = libmetawear.mbl_mw_gyro_bmi160_get_rotation_data_signal(s.device.board)
     libmetawear.mbl_mw_datasignal_subscribe(gyro, None, s.callback)
     
-    libmetawear.mbl_mw_acc_enable_acceleration_sampling(s.device.board)
-    libmetawear.mbl_mw_acc_start(s.device.board)
+    #libmetawear.mbl_mw_acc_enable_acceleration_sampling(s.device.board)
+    #libmetawear.mbl_mw_acc_start(s.device.board)
 
     libmetawear.mbl_mw_gyro_bmi160_enable_rotation_sampling(s.device.board)
     libmetawear.mbl_mw_gyro_bmi160_start(s.device.board)
 
-sleep(2.0)
+sleep(20.0)
 
 for s in states:
     libmetawear.mbl_mw_acc_stop(s.device.board)
