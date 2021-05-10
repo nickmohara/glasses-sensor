@@ -70,28 +70,31 @@ for s in states:
 
     libmetawear.mbl_mw_gyro_bmi160_enable_rotation_sampling(s.device.board)
     libmetawear.mbl_mw_gyro_bmi160_start(s.device.board)
-
-sleep(20.0)
-
-for s in states:
-    libmetawear.mbl_mw_acc_stop(s.device.board)
-    libmetawear.mbl_mw_acc_disable_acceleration_sampling(s.device.board)
     
-    libmetawear.mbl_mw_gyro_bmi160_stop(s.device.board)
-    libmetawear.mbl_mw_gyro_bmi160_disable_rotation_sampling(s.device.board)
+try: 
+    while True:
+        # do nothing and let the script run
+        x = 1        
+except KeyboardInterrupt:
+    for s in states:
+        libmetawear.mbl_mw_acc_stop(s.device.board)
+        libmetawear.mbl_mw_acc_disable_acceleration_sampling(s.device.board)
+        
+        libmetawear.mbl_mw_gyro_bmi160_stop(s.device.board)
+        libmetawear.mbl_mw_gyro_bmi160_disable_rotation_sampling(s.device.board)
 
-    acc = libmetawear.mbl_mw_acc_get_acceleration_data_signal(s.device.board)
-    libmetawear.mbl_mw_datasignal_unsubscribe(acc)
-    
-    gyro = libmetawear.mbl_mw_gyro_bmi160_get_rotation_data_signal(s.device.board)
-    libmetawear.mbl_mw_datasignal_unsubscribe(gyro)
-    
-    libmetawear.mbl_mw_debug_disconnect(s.device.board)
+        acc = libmetawear.mbl_mw_acc_get_acceleration_data_signal(s.device.board)
+        libmetawear.mbl_mw_datasignal_unsubscribe(acc)
+        
+        gyro = libmetawear.mbl_mw_gyro_bmi160_get_rotation_data_signal(s.device.board)
+        libmetawear.mbl_mw_datasignal_unsubscribe(gyro)
+        
+        libmetawear.mbl_mw_debug_disconnect(s.device.board)
 
-print("Total Samples Received")
-for s in states:
-    print("%s -> %d" % (s.device.address, s.samples))
-    
+    print("Total Samples Received")
+    for s in states:
+        print("%s -> %d" % (s.device.address, s.samples))
+        
     
     
 #address = "C4:89:ED:7D:03:ED"
