@@ -4,7 +4,6 @@ import numpy as np
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(2, GPIO.OUT)
-GPIO.output(2, GPIO.HIGH)
 
 # Run the infinite loop
 try:
