@@ -37,16 +37,16 @@ class State:
         # print(upAndDown)
 
         if (self.isLookingDown is False):
-            if (upAndDown <= -80):
+            if (upAndDown <= -50):
                 self.isLookingDown = True
-                print('isLookingDown: ', self.isLookingDown)
+                print('isLookingDown: ', self.isLookingDown) 
                 press_button()
 
         if (self.isLookingDown is True):
-            if (upAndDown >= 80):
+            if (upAndDown >= 50):
                 self.isLookingDown = False
                 print('isLookingDown: ', self.isLookingDown)
-                press_button()
+                # press_button()
 
         # print("%s -> %s" % (self.device.address, parse_value(data)))
         self.samples+= 1
